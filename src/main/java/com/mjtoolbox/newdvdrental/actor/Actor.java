@@ -1,13 +1,11 @@
 package com.mjtoolbox.newdvdrental.actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mjtoolbox.newdvdrental.film.Film;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity // declares this class is an entity
 @Table(name="actor", schema="public")
@@ -31,6 +29,7 @@ public class Actor {
     @ManyToMany(fetch = FetchType.LAZY,
             cascade =  {CascadeType.ALL}, mappedBy = "actors")
 
+    @JsonIgnore
     private Set<Film> films = new HashSet<>();
 
     public long getActorId() {
@@ -61,6 +60,10 @@ public class Actor {
         return lastUpdate;
     }
 
+    public void setFilms(Set<Film> films) {
+        this.films = films;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,5 +92,9 @@ public class Actor {
 
     public void setLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
+    }
+
+    public Collection<Film> getFilms() {
+        return films;
     }
 }

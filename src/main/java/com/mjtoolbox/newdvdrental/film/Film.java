@@ -3,12 +3,9 @@ package com.mjtoolbox.newdvdrental.film;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mjtoolbox.newdvdrental.actor.Actor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="film", schema="public")
@@ -16,6 +13,7 @@ public class Film {
 
     @Id
     @Column(name="film_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // tells the value is auto-generated
     private long film_id;
 
     @Column(name="title")
@@ -49,9 +47,9 @@ public class Film {
     @OnDelete(action = onDeleteAction.NO_ACTION)
     @JsonIgnore private Language language;
 
-    @Column(name="language", insertable= false, updatable = false)
-    private long language_id;
     */
+    @Column(name="language_id")
+    private long language_id;
 
     // fetch type; Lazy: Unless use GET, don't retrieve actor, get film; Eager: After you get film, you retrieve all actors related to the film
     @ManyToMany(fetch = FetchType.LAZY,
@@ -60,7 +58,7 @@ public class Film {
             joinColumns = {@JoinColumn(name="film_id")},
             inverseJoinColumns = {@JoinColumn(name="actor_id")})
 
-//    @JsonIgnore
+    @JsonIgnore
     private Set<Actor> actors = new HashSet<>();
 
     public long getFilm_id() {
@@ -134,7 +132,10 @@ public class Film {
     public void setLast_update(Date last_update) {
         this.last_update = last_update;
     }
-/*
+
+    public Collection<Actor> getActors() {
+        return actors;
+    }
     public long getLanguage_id() {
         return language_id;
     }
@@ -143,6 +144,7 @@ public class Film {
         this.language_id = language_id;
     }
 
+/*
     public Set<Actor> getActors() {
         return actors;
     }
