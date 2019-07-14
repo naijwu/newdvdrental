@@ -1,5 +1,6 @@
 package com.mjtoolbox.newdvdrental.actor;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -32,7 +33,7 @@ public class ActorController {
 
     @PutMapping("/actors/{id}")
     public Actor updateActor( @PathVariable long id, @Valid @RequestBody Actor actor) {
-        Actor actorFromDB = actorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Actor not found with ID: " + id);
+        Actor actorFromDB = actorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Actor not found with ID: " + id));
         actorFromDB.setFirstName (actor.getFirstName());
         actorFromDB.setLastName(actor.getLastName());
         return actorRepository.save(actorFromDB);
@@ -40,7 +41,7 @@ public class ActorController {
 
     @DeleteMapping("/actors/{id}")
     public void delete(@PathVariable long id) {
-        actorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Actor not found with ID: " + id);
-          actorRepository.deleteById(id));
+        actorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Actor not found with ID: " + id));
+        actorRepository.deleteById(id);
     }
 }

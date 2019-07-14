@@ -1,10 +1,13 @@
 package com.mjtoolbox.newdvdrental.actor;
 
+import com.mjtoolbox.newdvdrental.film.Film;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity // declares this class is an entity
 @Table(name="actor", schema="public")
@@ -24,6 +27,11 @@ public class Actor {
     @CreationTimestamp // type timestamp will be created
     @Column(name="last_update")
     private Date lastUpdate;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =  {CascadeType.ALL}, mappedBy = "actors")
+
+    private Set<Film> films = new HashSet<>();
 
     public long getActorId() {
         return actorId;
